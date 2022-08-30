@@ -9,10 +9,13 @@
 <body>
     <header>
         <span>
-            <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('home') }}"> HOME - </a>
         </span>
         <span>
-            <a href="{{ route('comics.index') }}">All Comics</a>
+            <a href="{{ route('comics.index') }}"> ALL COMICS - </a>
+        </span>
+        <span>
+            <a href="{{route('comics.create')}}"> CREATE COMIC </a>
         </span>
     </header>
 

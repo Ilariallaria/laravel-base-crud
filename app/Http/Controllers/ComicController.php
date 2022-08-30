@@ -34,7 +34,7 @@ class ComicController extends Controller
      */
     public function create()
     {
-        //
+        return view('comics.create');
     }
 
     /**
@@ -45,7 +45,22 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $new_data = $request->all();
+         
+        $new_comic = new Comic();
+        $new_comic->title = $new_data ['title'];
+        $new_comic->thumb = $new_data ['thumb'];
+        $new_comic->series = $new_data ['series'];
+        $new_comic->type = $new_data ['type'];
+        $new_comic->sale_date = $new_data ['sale_date'];
+        $new_comic->description = $new_data ['description'];
+        $new_comic->price = $new_data ['price'];
+        $new_comic->save();
+
+        // scegliamo noi dove reinderizzare l'utente
+        // scelto show del prodotto appena creato,
+        // dobbiamo compilare il solito campo che appare in list, con in nuovo id che abbiamo a disposizione
+        return redirect()->route('comics.show', ['comic' => $new_comic->id]);
     }
 
     /**
