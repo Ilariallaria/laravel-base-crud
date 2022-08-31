@@ -44,7 +44,18 @@ class ComicController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        // regole di validazione dati
+        $request->validate([
+            'title' => 'required|max:50',
+            'thumb' => 'required|max:60000',
+            'series' => 'required|max:50',
+            'type' => 'required|max:20',
+            'sale_date' => 'required|max:10',
+            'description' => 'required|max:60000',
+            'price' => 'required|max:10',
+        ]);
+
         $new_data = $request->all();
          
         $new_comic = new Comic();
@@ -89,7 +100,13 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::findOrFail($id);
+
+        $data = [
+            'comic'=> $comic
+        ];
+
+        return view ('comics.edit', $data);
     }
 
     /**
@@ -101,7 +118,16 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $new_data = $request->all();
+       
+        // mi prendo l'elemento con specifico id con il model
+        $comic_to_update = Comic::findOrFail($id);
+
+        // avendo dato mass assignment è sufficiente ->update
+        // se non fai mass assignment devi ripopolare tue le colonne e fare save
+        $comic_to_update->update($new_data);
+
+        return redirect()->route('comics.show', ['comic' => $comic_to_update->id]);
     }
 
     /**
