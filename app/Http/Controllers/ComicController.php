@@ -45,16 +45,9 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {   
+    
         // regole di validazione dati
-        $request->validate([
-            'title' => 'required|max:50',
-            'thumb' => 'required|max:60000',
-            'series' => 'required|max:50',
-            'type' => 'required|max:20',
-            'sale_date' => 'required|max:10',
-            'description' => 'required|max:60000',
-            'price' => 'required|max:10',
-        ]);
+        $request->validate($this->getValidationRules());
 
         $new_data = $request->all();
          
@@ -118,6 +111,10 @@ class ComicController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // regole di validazione dati
+        $request->validate($this->getValidationRules());
+
+
         $new_data = $request->all();
        
         // mi prendo l'elemento con specifico id con il model
@@ -138,6 +135,23 @@ class ComicController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // con il model, ci prendiamo l'elemento da cancellare
+        $pasta_to_delete = Comic::findOrFail($id);
+        // lo cancelliamo con ->delete()
+        $pasta_to_delete->delete();
+
+        return redirect()->route ('comics.index');
+    }
+
+    protected function getValidationRules(){
+        return [
+            'title' => 'required|max:50',
+            'thumb' => 'required|max:60000',
+            'series' => 'required|max:50',
+            'type' => 'required|max:20',
+            'sale_date' => 'required|max:10',
+            'description' => 'required|max:60000',
+            'price' => 'required|max:10',
+        ];
     }
 }
